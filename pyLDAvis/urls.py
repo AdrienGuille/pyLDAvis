@@ -18,7 +18,8 @@ D3_LOCAL = os.path.join(LOCAL_JS_DIR, "d3.v3.min.js")
 
 if DEV:
     WWW_JS_DIR = "https://rawgit.com/bmabey/pyLDAvis/master/pyLDAvis/js/"
-    LDAVIS_URL = WWW_JS_DIR + "ldavis.js"
+    #LDAVIS_URL = WWW_JS_DIR + "ldavis.js"
+    LDAVIS_URL = "http://mediamining.univ-lyon2.fr/people/guille/dmsq/ldavis.js"
     LDAVIS_CSS_URL = WWW_JS_DIR + "ldavis.css"
 
     LDAVIS_LOCAL = os.path.join(LOCAL_JS_DIR, "ldavis.js")
@@ -29,7 +30,8 @@ else:
     JS_VERSION = '1.0.0'
     CSS_VERSION = '1.0.0'
 
-    LDAVIS_URL = WWW_JS_DIR + "ldavis.v{0}.js".format(JS_VERSION)
+    #LDAVIS_URL = WWW_JS_DIR + "ldavis.v{0}.js".format(JS_VERSION)
+    LDAVIS_URL = "http://mediamining.univ-lyon2.fr/people/guille/dmsq/ldavis.js"
     LDAVIS_CSS_URL = WWW_JS_DIR + "ldavis.v{0}.css".format(CSS_VERSION)
 
     LDAVIS_LOCAL = os.path.join(LOCAL_JS_DIR,

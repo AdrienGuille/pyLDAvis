@@ -188,12 +188,14 @@ def _series_with_name(data, name):
         return pd.Series(data, name=name)
 
 
-def _topic_coordinates(mds, topic_term_dists, topic_proportion):
+def _topic_coordinates(mds, topic_term_dists, topic_proportion, labels):
     K = topic_term_dists.shape[0]
     mds_res = mds(topic_term_dists)
     assert mds_res.shape == (K, 2)
+    print(topic_proportion.shape)
+    print(len(labels))
     mds_df = pd.DataFrame({'x': mds_res[:, 0], 'y': mds_res[:, 1], 'topics': range(1, K + 1),
-                          'cluster': 1, 'Freq': topic_proportion * 100})
+                          'cluster': 1, 'Freq': topic_proportion * 100, 'labels': labels})
     # note: cluster (should?) be deprecated soon. See: https://github.com/cpsievert/LDAvis/issues/26
     return mds_df
 
@@ -297,7 +299,7 @@ def _token_table(topic_info, term_topic_freq, vocab, term_frequency):
     return token_table.sort_values(by=['Term', 'Topic'])
 
 
-def prepare(topic_term_dists, doc_topic_dists, doc_lengths, vocab, term_frequency,
+def prepare(topic_term_dists, doc_topic_dists, doc_lengths, vocab, term_frequency, labels,
             R=30, lambda_step=0.01, mds=js_PCoA, n_jobs=-1,
             plot_opts={'xlab': 'PC1', 'ylab': 'PC2'}, sort_topics=True):
     """Transforms the topic model distributions and related corpus data into
@@ -415,7 +417,7 @@ def prepare(topic_term_dists, doc_topic_dists, doc_lengths, vocab, term_frequenc
     topic_info = _topic_info(topic_term_dists, topic_proportion,
                              term_frequency, term_topic_freq, vocab, lambda_step, R, n_jobs)
     token_table = _token_table(topic_info, term_topic_freq, vocab, term_frequency)
-    topic_coordinates = _topic_coordinates(mds, topic_term_dists, topic_proportion)
+    topic_coordinates = _topic_coordinates(mds, topic_term_dists, topic_proportion, labels)
     client_topic_order = [x + 1 for x in topic_order]
 
     return PreparedData(topic_coordinates, topic_info,
